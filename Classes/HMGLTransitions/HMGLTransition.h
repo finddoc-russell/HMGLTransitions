@@ -27,10 +27,12 @@ typedef struct {
 
 @interface HMGLTransition : NSObject {
 
-	TransitionTexCoords basicTexCoords;	
+	TransitionTexCoords basicTexCoords;
+	HMGLTransition* reverseTransition;
 }
 
 @property (nonatomic, assign) TransitionTexCoords basicTexCoords;
+@property (nonatomic, retain) HMGLTransition* reverseTransition;
 
 // Subclass this class and implement this three methods to create your own transition
 - (void)initTransition;

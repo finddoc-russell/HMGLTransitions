@@ -47,18 +47,26 @@
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     if ((self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil])) {
 	
-		Switch3DTransition *t1 = [[[Switch3DTransition alloc] init] autorelease];
-		t1.transitionType = Switch3DTransitionLeft;
-		
-		FlipTransition *t2 = [[[FlipTransition alloc] init] autorelease];
-		t2.transitionType = FlipTransitionRight;		
-		
+		Switch3DTransition *t3d1 = [[[Switch3DTransition alloc] init] autorelease];
+		t3d1.transitionType = Switch3DTransitionRight;
+		Switch3DTransition *t3d2 = [[[Switch3DTransition alloc] init] autorelease];
+		t3d2.transitionType = Switch3DTransitionLeft;
+		t3d1.reverseTransition = t3d2;
+        t3d2.reverseTransition = t3d1;
+
+		FlipTransition *tf1 = [[[FlipTransition alloc] init] autorelease];
+		tf1.transitionType = FlipTransitionRight;		
+        FlipTransition *tf2 = [[[FlipTransition alloc] init] autorelease];
+		tf2.transitionType = FlipTransitionLeft;		
+		tf1.reverseTransition = tf2;
+        tf2.reverseTransition = tf1;
+
 		transitionsArray = [[NSArray alloc] initWithObjects:
-							[[[Switch3DTransition alloc] init] autorelease],
-							t1,
+							t3d1,
+							t3d2,
 							[[[ClothTransition alloc] init] autorelease],							
-							[[[FlipTransition alloc] init] autorelease],
-							t2,
+                            tf1,
+                            tf2,
 							[[[RotateTransition alloc] init] autorelease],
 							[[[DoorsTransition alloc] init] autorelease],
 							nil];
@@ -67,8 +75,8 @@
 								 @"Switch 3D right",
 								 @"Switch 3D left",
 								 @"Cloth",
-								 @"Flip left",
 								 @"Flip right",
+								 @"Flip left",
 								 @"Rotate",
 								 @"Doors",
 								 nil];
@@ -128,8 +136,8 @@
 #pragma mark -
 #pragma mark ModalController delegate
 - (void)modalControllerDidFinish:(ModalViewController *)modalController {
-
-	[[HMGLTransitionManager sharedTransitionManager] setTransition:transition];		
+    
+	[[HMGLTransitionManager sharedTransitionManager] setTransition:transition.reverseTransition == nil ? transition : transition.reverseTransition];		
 	[[HMGLTransitionManager sharedTransitionManager] dismissModalViewController:modalController];
 }
 

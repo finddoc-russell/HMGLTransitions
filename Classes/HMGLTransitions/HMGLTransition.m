@@ -23,6 +23,7 @@
 @implementation HMGLTransition
 
 @synthesize basicTexCoords;
+@synthesize reverseTransition;
 
 - (void)initTransition {
 }
