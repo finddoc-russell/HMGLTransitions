@@ -23,10 +23,12 @@
 @implementation DoorsTransition
 
 @synthesize transitionType;
+@synthesize transitionOrientation=_transitionOrientation;
 
 - (id)init {
 	if (self = [super init]) {
 		transitionType = DoorsTransitionTypeOpen;
+        _transitionOrientation = DoorsTransitionOrientationHorizontal;
 	}
 	return self;
 }
@@ -68,10 +70,17 @@
     };
     	
 	GLfloat verticesHalf[] = {
-        -w * 0.5, -h,
+        -w * 0.5 , -h,
 		w * 0.5, -h,
         -w * 0.5,  h,
 		w * 0.5,  h,
+    };
+    
+    GLfloat verticesHalfHorizontal[] = {
+        -w , -h* 0.5,
+		w , -h* 0.5,
+        -w ,  h* 0.5,
+		w ,  h* 0.5,
     };
     
     GLfloat texcoords1[] = {
@@ -86,7 +95,21 @@
 		basicTexCoords.x1, basicTexCoords.y1,
 		(basicTexCoords.x3 + basicTexCoords.x2) * 0.5, (basicTexCoords.y2 + basicTexCoords.y3) * 0.5,
 		basicTexCoords.x3, basicTexCoords.y3,	
-    };		
+    };
+     
+    GLfloat texcoordsHorizontal1[] = {
+		basicTexCoords.x0, basicTexCoords.y0,
+		basicTexCoords.x1, basicTexCoords.y1,
+		(basicTexCoords.x2 + basicTexCoords.x0) * 0.5, (basicTexCoords.y2 + basicTexCoords.y0) * 0.5,
+		(basicTexCoords.x3 + basicTexCoords.x1) * 0.5, (basicTexCoords.y2 + basicTexCoords.y1) * 0.5,	
+    };
+	
+    GLfloat texcoordsHorizontal2[] = {
+		(basicTexCoords.x2 + basicTexCoords.x0) * 0.5, (basicTexCoords.y2 + basicTexCoords.y0) * 0.5,
+		(basicTexCoords.x3 + basicTexCoords.x1) * 0.5, (basicTexCoords.y2 + basicTexCoords.y1) * 0.5,
+		basicTexCoords.x2, basicTexCoords.y2,
+		basicTexCoords.x3, basicTexCoords.y3,	
+    };
 	
     glEnable(GL_TEXTURE_2D);
 	
@@ -113,31 +136,63 @@
 	
 	glColor4f(1.0 - intensity, 1.0 - intensity, 1.0 - intensity, 1.0);
 	
-	// left	
-	glPushMatrix();
-	glBindTexture(GL_TEXTURE_2D, beginTexture);		
-    glVertexPointer(2, GL_FLOAT, 0, verticesHalf);
-    glEnableClientState(GL_VERTEX_ARRAY);	
-    glTexCoordPointer(2, GL_FLOAT, 0, texcoords1);
-    glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-
-    glTranslatef(-w, 0, -1);
-	glRotatef(-sah * sah * sah * 90, 0, 1, 0);		
-	glTranslatef(w * 0.5, 0, 0);
-	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-	glPopMatrix();
-	
-	// right
-	glPushMatrix();	
-    glVertexPointer(2, GL_FLOAT, 0, verticesHalf);
-    glEnableClientState(GL_VERTEX_ARRAY);		
-    glTexCoordPointer(2, GL_FLOAT, 0, texcoords2);
-    glEnableClientState(GL_TEXTURE_COORD_ARRAY);	 
-	glTranslatef(w, 0, -1);
-	glRotatef(sah * sah * sah * 90, 0, 1, 0);		
-	glTranslatef(-w * 0.5, 0, 0);
-	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-	glPopMatrix();	
+	if (_transitionOrientation == DoorsTransitionOrientationVertical) {
+        
+        // left	
+        glPushMatrix();
+        glBindTexture(GL_TEXTURE_2D, beginTexture);		
+        glVertexPointer(2, GL_FLOAT, 0, verticesHalf);
+        glEnableClientState(GL_VERTEX_ARRAY);	
+        glTexCoordPointer(2, GL_FLOAT, 0, texcoords1);
+        glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+        
+        glTranslatef(-w, 0, -1);
+        glRotatef(-sah * sah * sah * 90, 0, 1, 0);		
+        glTranslatef(w * 0.5, 0, 0);
+        glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+        glPopMatrix();
+        
+        // right
+        glPushMatrix();	
+        glVertexPointer(2, GL_FLOAT, 0, verticesHalf);
+        glEnableClientState(GL_VERTEX_ARRAY);		
+        glTexCoordPointer(2, GL_FLOAT, 0, texcoords2);
+        glEnableClientState(GL_TEXTURE_COORD_ARRAY);	 
+        glTranslatef(w, 0, -1);
+        glRotatef(sah * sah * sah * 90, 0, 1, 0);		
+        glTranslatef(-w * 0.5, 0, 0);
+        glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+        glPopMatrix();
+    
+    } else {
+        
+        //top
+        glPushMatrix();
+        glBindTexture(GL_TEXTURE_2D, beginTexture);		
+        glVertexPointer(2, GL_FLOAT, 0, verticesHalfHorizontal);
+        glEnableClientState(GL_VERTEX_ARRAY);	
+        glTexCoordPointer(2, GL_FLOAT, 0, texcoordsHorizontal1);
+        glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+        
+        glTranslatef(0, -h, -1);
+        glRotatef(sah * sah * sah * 90, 1, 0, 0);		
+        glTranslatef(0, h * 0.5, 0);
+        glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+        glPopMatrix();
+        
+        // bottom
+        glPushMatrix();	
+        glVertexPointer(2, GL_FLOAT, 0, verticesHalfHorizontal);
+        glEnableClientState(GL_VERTEX_ARRAY);		
+        glTexCoordPointer(2, GL_FLOAT, 0, texcoordsHorizontal2);
+        glEnableClientState(GL_TEXTURE_COORD_ARRAY);	 
+        glTranslatef(0, h, -1);
+        glRotatef(-sah * sah * sah * 90, 1, 0, 0);		
+        glTranslatef(0, -h * 0.5, 0);
+        glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+        glPopMatrix();
+        
+    }
 }
 
 - (BOOL)calc:(NSTimeInterval)frameTime {
