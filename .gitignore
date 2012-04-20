@@ -1,4 +1,20 @@
+build/
+ 
+*.mode1
+*.mode1v3
+*.mode2v3
+*.perspective
+*.perspectivev3
+*.pbxuser
+*.xcworkspace
+xcuserdata
+ 
+.svn
+CVS
+ 
 .DS_Store
+*.swp
+*~.nib.DS_Store
 *.swp
 *~.nib
 *.orig
@@ -7,7 +23,4 @@
 *.REMOTE*
 *.BACKUP*
 
-build/
-
-xcuserdata
 .xcodeproj/ !*.xcodeproj/project.pbxproj

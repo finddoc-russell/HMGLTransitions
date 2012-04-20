@@ -26,6 +26,11 @@ typedef enum {
 	DoorsTransitionTypeClose
 } DoorsTransitionType;
 
+typedef enum {
+	DoorsTransitionOrientationVertical,
+	DoorsTransitionOrientationHorizontal
+} DoorsTransitionOrientation;
+
 @interface DoorsTransition : HMGLTransition {
 	
 	GLfloat animationTime;
@@ -34,5 +39,5 @@ typedef enum {
 }
 
 @property (nonatomic, assign) DoorsTransitionType transitionType;
-
+@property (nonatomic, assign) DoorsTransitionOrientation transitionOrientation;
 @end
