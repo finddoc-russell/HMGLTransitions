@@ -1,5 +1,10 @@
-// Copyright (c) 2010 Hyperbolic Magnetism
-// 
+//
+//  FoldTransition.h
+//  HMGLTransitions
+//
+//  Created by John Baker on 3/4/12.
+//  Copyright (c) 2012 5 to 9 Studio. All rights reserved.
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
@@ -19,24 +24,31 @@
 // THE SOFTWARE.
 
 #import <Foundation/Foundation.h>
-#import <OpenGLES/ES1/gl.h>
+#import "HMGLTransition.h"
 
-typedef struct {
-	GLfloat x0, y0, x1, y1,	x2, y2,	x3, y3;
-} TransitionTexCoords;
+typedef enum {
+	FoldDirectionRight,	
+	FoldDirectionLeft,
+	FoldDirectionTop,
+	FoldDirectionBottom,
+} FoldDirection;
 
-@interface HMGLTransition : NSObject {
+typedef enum {
+	Fold,	
+	Unfold,
+} FoldType;
 
-	TransitionTexCoords basicTexCoords;
-	HMGLTransition* reverseTransition;
+@interface FoldTransition : HMGLTransition {
+    
+	FoldDirection foldDirection;
+	FoldType foldType;
+	
+    int numberOfFolds;
+	GLfloat animationTime;
 }
 
-@property (nonatomic, assign) TransitionTexCoords basicTexCoords;
-@property (nonatomic, retain) HMGLTransition* reverseTransition;
-
-// Subclass this class and implement this three methods to create your own transition
-- (void)initTransition;
-- (void)drawWithBeginTexture:(GLuint)beginTexture endTexture:(GLuint)endTexture;
-- (BOOL)calc:(NSTimeInterval)frameTime; // Must return YES when the transition is over
+@property (nonatomic, assign) int numberOfFolds;
+@property (nonatomic, assign) FoldDirection foldDirection;
+@property (nonatomic, assign) FoldType foldType;
 
 @end
