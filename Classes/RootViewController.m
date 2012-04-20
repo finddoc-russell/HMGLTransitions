@@ -26,6 +26,7 @@
 #import "ClothTransition.h"
 #import "DoorsTransition.h"
 #import "FoldTransition.h"
+#import "CubeTransition.h"
 
 #import "ModalViewController.h"
 
@@ -78,6 +79,8 @@
         tufld2.reverseTransition = tfld2;
 		tfld1.reverseTransition = tufld1;
         tfld2.reverseTransition = tufld1;
+        
+        
 
 
 		transitionsArray = [[NSArray alloc] initWithObjects:
@@ -92,6 +95,7 @@
                             tfld2,
                             tufld1,
                             tufld2,
+                            [[[CubeTransition alloc] init] autorelease],
 							nil];
 		
 		transitionsNamesArray = [[NSArray alloc] initWithObjects:
@@ -106,6 +110,7 @@
 								 @"Fold Left",
 								 @"Unfold Right",
 								 @"Unfold Left",
+                                 @"Cube",
 								 nil];
 								 
 		
